@@ -25,8 +25,18 @@
             <add-to-group group-id="GenerateGroup" anchor="first"/>
         </action>
 
+        <action id="mars.GenerateAllSetterWithDefaultValue" class="actions.GenerateAllSetterWithDefaultValue"
+                text="generate all setter with default value" description="生成所有set方法，并添加默认值">
+            <add-to-group group-id="GenerateGroup" anchor="first"/>
+        </action>
+
         <action id="mars.GenerateAllBuilderNoDefaultValue" class="actions.GenerateAllBuilderNoDefaultValue"
                 text="generate all builder no default value" description="生成所有build方法">
+            <add-to-group group-id="GenerateGroup" anchor="first"/>
+        </action>
+
+        <action id="mars.GenerateAllBuilderWithDefaultValue" class="actions.GenerateAllBuilderWithDefaultValue"
+                text="generate all builder with default value" description="生成所有build方法，并添加默认值">
             <add-to-group group-id="GenerateGroup" anchor="first"/>
         </action>
     </actions>
