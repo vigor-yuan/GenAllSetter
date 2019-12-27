@@ -61,7 +61,7 @@ public class GenerateAllSetterNoDefaultValue extends AnAction {
                 .append(variableText)
                 .append('.')
                 .append(psiMethod.getName())
-                .append("()"));
+                .append("();"));
         return sb.toString();
     }
 
