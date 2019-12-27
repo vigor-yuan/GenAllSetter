@@ -1,0 +1,28 @@
+.DS_Store
+**/build/
+**/classes/
+*.class
+# ide
+.idea/
+*.iml
+.settings/
+.project
+.classpath
+# gradle
+.gradle/
+# logs
+**/logs/
+*.log
+# node
+**/node_modules/
+# codegen
+## swagger
+api/gensrc
+api/src/docs/asciidoc/generated/
+api/src/main/resources/static/docs/
+## vue
+admin/src/main/resources/static/static/
+admin/src/main/resources/templates/index.ftl
+# development
+application-local.properties
+application-ut-local.properties
