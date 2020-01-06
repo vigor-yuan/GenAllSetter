@@ -1,5 +1,6 @@
 package actions;
 
+import com.google.common.collect.Sets;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
@@ -10,13 +11,13 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiTypesUtil;
+import entity.Parameter;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
-import utils.CodeUtils;
-import utils.PsiClassUtils;
-import utils.PsiDocumentUtils;
-import utils.PsiElementUtils;
+import utils.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.IntStream;
 
 public abstract class BaseGenerateAllSetter extends AnAction {
@@ -50,15 +51,25 @@ public abstract class BaseGenerateAllSetter extends AnAction {
         //split text
         String splitText = PsiDocumentUtils.calculateSplitText(document, parent.getTextOffset());
         //Generate insert code
-        String code = generateCode(allSetMethods, variableText, splitText);
+        Pair<String, Set<String>> codeAndImports = generateCodeAndImports(allSetMethods, variableText, splitText);
         WriteCommandAction.runWriteCommandAction(project,
-                () -> document.insertString(parent.getTextOffset() + parent.getTextLength(), code));
+                () -> document.insertString(parent.getTextOffset() + parent.getTextLength(), codeAndImports.getLeft()));
+        PsiToolUtils.addImportToFile(project, (PsiJavaFile) file, document, codeAndImports.getRight());
+
     }
 
+    /**
+     * Generate code and default imports
+     *
+     * @param allSetMethods
+     * @param variableText
+     * @param splitText
+     * @return
+     */
     @NotNull
-    private String generateCode(List<PsiMethod> allSetMethods, String variableText, String splitText) {
-        //Generate code
+    private Pair<String, Set<String>> generateCodeAndImports(List<PsiMethod> allSetMethods, String variableText, String splitText) {
         StringBuilder sb = new StringBuilder();
+        Set<String> importPackages = Sets.newHashSet();
         allSetMethods.forEach(psiMethod -> {
             sb.append(splitText);
             sb.append(variableText);
@@ -66,25 +77,32 @@ public abstract class BaseGenerateAllSetter extends AnAction {
             sb.append(psiMethod.getName());
             sb.append("(");
             if (hasDefaultValue()) {
-                //TODO @Mars 需要添加导包
                 PsiParameter[] parameters = psiMethod.getParameterList().getParameters();
                 IntStream.range(0, parameters.length)
                         .mapToObj(i -> generateParmaterCode(i, parameters.length, parameters[i].getType().getCanonicalText()))
-                        .forEach(sb::append);
+                        .forEach(valueAndImport -> {
+                            sb.append(valueAndImport.getLeft());
+                            if (CodeUtils.isNeedToDeclareClasses(valueAndImport.getRight())) {
+                                importPackages.add(valueAndImport.getRight());
+                            }
+                        });
             }
             sb.append(");");
         });
-        return sb.toString();
+        return Pair.of(sb.toString(), importPackages);
     }
 
-    public String generateParmaterCode(Integer index, int size, String parmaterClassName) {
-        StringBuilder sb = new StringBuilder();
-        String value = CodeUtils.getDefaultValue(parmaterClassName).orElse("new " + parmaterClassName + "()");
-        sb.append(value);
+    public Pair<String, String> generateParmaterCode(Integer index, int size, String parmaterClassName) {
+        StringBuilder code = new StringBuilder();
+        Parameter parameter = PsiToolUtils.extraParmaterFromFullyQualifiedName(parmaterClassName);
+        String packagePath = parameter.getPackagePath();
+        Pair<String, String> valueAndImport = CodeUtils.getDefaultValueAndDefaultImport(packagePath)
+                .orElse(Pair.of("new " + parameter.getClassName() + "()", packagePath));
+        code.append(valueAndImport.getLeft());
         if (index != size - 1) {
-            sb.append(',');
+            code.append(',');
         }
-        return sb.toString();
+        return Pair.of(code.toString(), valueAndImport.getRight());
     }
 
     @Override

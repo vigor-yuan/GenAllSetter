@@ -1,5 +1,6 @@
 package actions;
 
+import com.google.common.collect.Sets;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
@@ -10,13 +11,13 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiTypesUtil;
+import entity.Parameter;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
-import utils.CodeUtils;
-import utils.PsiClassUtils;
-import utils.PsiDocumentUtils;
-import utils.PsiElementUtils;
+import utils.*;
 
 import java.util.Arrays;
+import java.util.Set;
 
 public abstract class BaseGenerateAllBuilder extends AnAction {
 
@@ -37,29 +38,44 @@ public abstract class BaseGenerateAllBuilder extends AnAction {
         //split text
         String splitText = PsiDocumentUtils.calculateSplitText(document, expression.getTextOffset()) + "\t\t";
         //Generate code
-        String code = generateCode(fields, splitText);
+        Pair<String, Set<String>> codeAndImportStatements = generateCode(fields, splitText);
         WriteCommandAction.runWriteCommandAction(project,
-                () -> document.insertString(expression.getTextOffset() + expression.getTextLength(), code));
+                () -> document.insertString(expression.getTextOffset() + expression.getTextLength(),
+                        codeAndImportStatements.getLeft()));
+        PsiToolUtils.addImportToFile(project, (PsiJavaFile) file, document, codeAndImportStatements.getRight());
     }
 
+    /**
+     * @param fields
+     * @param splitText
+     * @return left是
+     */
     @NotNull
-    private String generateCode(PsiField[] fields, String splitText) {
-        StringBuilder sb = new StringBuilder();
+    private Pair<String, Set<String>> generateCode(PsiField[] fields, String splitText) {
+        StringBuilder code = new StringBuilder();
+        Set<String> importPackages = Sets.newHashSet();
         Arrays.stream(fields).forEach(psiField -> {
-            sb.append(splitText);
-            sb.append('.');
-            sb.append(psiField.getName());
-            sb.append("(");
+            code.append(splitText);
+            code.append('.');
+            code.append(psiField.getName());
+            code.append("(");
             if (hasDefaultValue()) {
-                //TODO @Mars 需要添加导包
                 String parmaterClassName = psiField.getType().getCanonicalText();
-                sb.append(CodeUtils.getDefaultValue(parmaterClassName).orElse("new " + parmaterClassName + "()"));
+                Parameter parameter = PsiToolUtils.extraParmaterFromFullyQualifiedName(parmaterClassName);
+                String packagePath = parameter.getPackagePath();
+                Pair<String, String> valueAndImport = CodeUtils.getDefaultValueAndDefaultImport(packagePath)
+                        .orElse(Pair.of("new " + parameter.getClassName() + "()", packagePath));
+                code.append(valueAndImport.getLeft());
+                if (CodeUtils.isNeedToDeclareClasses(valueAndImport.getRight())) {
+                    importPackages.add(valueAndImport.getRight());
+                }
             }
-            sb.append(")");
+            code.append(")");
         });
-        sb.append(splitText).append(".build()");
-        return sb.toString();
+        code.append(splitText).append(".build()");
+        return Pair.of(code.toString(), importPackages);
     }
+
 
     @Override
     public void update(@NotNull AnActionEvent e) {

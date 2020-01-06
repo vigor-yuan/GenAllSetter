@@ -3,10 +3,7 @@
     <name>GenAllSetter</name>
     <vendor email="13093687239@163.com">Mars</vendor>
 
-    <description><![CDATA[
-    一键生成对象的所有set方法，同时支持lombok @builder<br>
-    <em>most HTML tags may be used</em>
-    ]]></description>
+    <description>gen all set or build method,gen all set or build method,gen all set or build method</description>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
@@ -17,6 +14,8 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
     </extensions>
+
+    <idea-version since-build="183"/>
 
     <actions>
         <!-- Add your actions here -->
