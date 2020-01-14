@@ -3,7 +3,11 @@
     <name>GenAllSetter</name>
     <vendor email="13093687239@163.com">Mars</vendor>
 
-    <description>gen all set or build method,gen all set or build method,gen all set or build method</description>
+    <description>
+        <![CDATA[
+        <p><a href='https://github.com/TonyPhoneix/GenAllSetter'><span>Github</span></a><span> | </span><a href='https://github.com/TonyPhoneix/GenAllSetter/issues'><span>Issues</span></a></p><p><span>一个支持调用对象的所有Set方法的插件。</span></p><p><span>支持@Builder</span></p><p><span>支持生成默认值</span></p><p><span>详细的使用方法请访问</span><a href='https://github.com/TonyPhoneix/GenAllSetter'><span>Github</span></a></p><p>&nbsp;</p><p>&nbsp;</p>
+        ]]>
+    </description>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
@@ -20,22 +24,24 @@
     <actions>
         <!-- Add your actions here -->
         <action id="mars.GenerateAllSetterNoDefaultValue" class="actions.GenerateAllSetterNoDefaultValue"
-                text="generate all setter no default value" description="生成所有set方法">
+                text="generate all setter no default value" description="Generate all set methods">
             <add-to-group group-id="GenerateGroup" anchor="first"/>
         </action>
 
         <action id="mars.GenerateAllSetterWithDefaultValue" class="actions.GenerateAllSetterWithDefaultValue"
-                text="generate all setter with default value" description="生成所有set方法，并添加默认值">
+                text="generate all setter with default value"
+                description="Generate all set methods and add default values">
             <add-to-group group-id="GenerateGroup" anchor="first"/>
         </action>
 
         <action id="mars.GenerateAllBuilderNoDefaultValue" class="actions.GenerateAllBuilderNoDefaultValue"
-                text="generate all builder no default value" description="生成所有build方法">
+                text="generate all builder no default value" description="Generate all build methods">
             <add-to-group group-id="GenerateGroup" anchor="first"/>
         </action>
 
         <action id="mars.GenerateAllBuilderWithDefaultValue" class="actions.GenerateAllBuilderWithDefaultValue"
-                text="generate all builder with default value" description="生成所有build方法，并添加默认值">
+                text="generate all builder with default value"
+                description="Generate all build methods and add default values">
             <add-to-group group-id="GenerateGroup" anchor="first"/>
         </action>
     </actions>
