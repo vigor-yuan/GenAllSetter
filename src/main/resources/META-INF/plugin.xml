@@ -5,7 +5,7 @@
 
     <description>
         <![CDATA[
-        <p><a href='https://github.com/TonyPhoneix/GenAllSetter'><span>Github</span></a><span> | </span><a href='https://github.com/TonyPhoneix/GenAllSetter/issues'><span>Issues</span></a></p><p><span>一个支持调用对象的所有Set方法的插件。</span></p><p><span>支持@Builder</span></p><p><span>支持生成默认值</span></p><p><span>详细的使用方法请访问</span><a href='https://github.com/TonyPhoneix/GenAllSetter'><span>Github</span></a></p><p>&nbsp;</p><p>&nbsp;</p>
+        <p><a href='https://github.com/TonyPhoneix/GenAllSetter'><span>Github</span></a><span> | </span><a href='https://github.com/TonyPhoneix/GenAllSetter/issues'><span>Issues</span></a></p><p><span>A plugin that supports invoking all Set methods of an object.</span></p><p><span>Support Lombok @Builder</span></p><p><span>Support for generating default values</span></p><p><span>For detailed usage, please visit</span><a href='https://github.com/TonyPhoneix/GenAllSetter'><span>Github</span></a></p><p>&nbsp;</p><p>&nbsp;</p>
         ]]>
     </description>
 
