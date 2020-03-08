@@ -10,7 +10,7 @@ Java程序员最害怕的就是给对象赋值。当对象的字段特别多时�
 
 - Preferences(Settings) > Plugins > install plugin from disk > find "genAllSetter-1.1.zip" > Install Plugin > restart
 
-![gifhome_1920x1080_18s](/material/gifhome_1920x1080_18s.gif)
+![gifhome_1920x1080_18s](/material/tech.gif)
 
 - Set模式
 
