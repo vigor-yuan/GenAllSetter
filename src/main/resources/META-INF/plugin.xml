@@ -14,13 +14,8 @@
     <!-- uncomment to enable plugin in all products
     <depends>com.intellij.modules.lang</depends>
     -->
-    <change-notes><![CDATA[
-        <strong>1.1</strong>
-        <ul>
-            <li>[NEW]auto add import to class</li>
-            <li>[NEW]Improve the logic of generating default values</li>
-        </ul>
-    ]]>
+    <change-notes>
+        Auto add import statements to class, And improve the logic of generating default values.
     </change-notes>
 
     <extensions defaultExtensionNs="com.intellij">
