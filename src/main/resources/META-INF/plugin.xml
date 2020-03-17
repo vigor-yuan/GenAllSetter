@@ -27,7 +27,7 @@
     <actions>
         <!-- Add your actions here -->
         <action id="mars.GenerateAllSetterNoDefaultValue" class="actions.GenerateAllSetterNoDefaultValue"
-                text="generate all setter no default value" description="Generate all set methods">
+                text="generate all setter without default value" description="Generate all set methods">
             <add-to-group group-id="GenerateGroup" anchor="first"/>
         </action>
 
@@ -38,7 +38,7 @@
         </action>
 
         <action id="mars.GenerateAllBuilderNoDefaultValue" class="actions.GenerateAllBuilderNoDefaultValue"
-                text="generate all builder no default value" description="Generate all build methods">
+                text="generate all builder without default value" description="Generate all build methods">
             <add-to-group group-id="GenerateGroup" anchor="first"/>
         </action>
 
